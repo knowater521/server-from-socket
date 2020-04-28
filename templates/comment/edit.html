@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>评论编辑</title>
+</head>
+<body>
+    <form action="/comment/update?id={{ comment.id }}" method="POST">
+        <input type="text" name="content" value="{{ comment.content }}">
+        <br>
+        <button type="submit">更新</button>
+    </form>
+</body>

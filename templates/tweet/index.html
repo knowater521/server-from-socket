@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>Tweet</title>
+    <style>
+        .comment-area {
+            border: 1px solid lightskyblue;
+        }
+    </style>
+</head>
+<body>
+    <h3>你好，{{ username }}</h3>
+    <form action="/tweet/add" method="POST">
+        <input type="text" name="content" placeholder="写下你的想法">
+        <br>
+        <button type="submit">发布</button>
+    </form>
+    <hr>
+    <div class="tweet-list">
+        {% for tweet in tweets %}
+            <div class="tweet-cell">
+                <div class="content-area">
+                    <div>
+                        作者：{{ tweet.user().username }}
+                    </div>
+                    <div class="tweet-content-cell">
+                        {{ tweet.content }}
+                    </div>
+                    <div>
+                        <span>发布于 {{ tweet.formatted_ct('%Y/%m/%d %H:%M') }}</span>
+                        <span>更新于 {{ tweet.formatted_ut('%Y/%m/%d %H:%M') }}</span>
+                    </div>
+                    <div>
+                        <a href="/tweet/delete?id={{ tweet.id }}">删除</a>
+                        <a href="/tweet/edit?id={{ tweet.id }}">编辑</a>
+                    </div>
+                </div>
+                <div class="comment-area">
+                    <div class="comment-add">
+                        <form action="/comment/add?id={{ tweet.id }}", method="POST">
+                            <input type="text" name="content" placeholder="写下评论">
+                            <br>
+                            <button type="submit">提交</button>
+                        </form>
+                    </div>
+                    <div class="comment-list">
+                        {% for comment in tweet.comments() %}
+                            <div>
+                                作者：{{ comment.user().username }}
+                            </div>
+                            <div>
+                                {{ comment.content }}
+                            </div>
+                            <div>
+                                发布于 {{ comment.formatted_ct('%m/%d %H:%M') }}
+                            </div>
+                            <div>
+                                <a href="/comment/delete?id={{ comment.id }}">删除</a>
+                                <a href="/comment/edit?id={{ comment.id }}">编辑</a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <hr>
+        {% endfor %}
+    </div>
+</body>
